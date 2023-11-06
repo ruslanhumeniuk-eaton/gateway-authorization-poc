@@ -1,0 +1,92 @@
+{
+  "Routes": [
+    {
+      "PermissionKey": null, // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/personal-data", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-personal-data", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "PermissionKey": "CanGetContracts", // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/contracts", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-contracts", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "PermissionKey": "HasDriverPermission", // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/driver-permission", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/has-driver-permission", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "PermissionKey": "NoPermissionRequired", // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/no-permission", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-no-permission", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "PermissionKey": "CanKnowFuture", // <-- permission || User doesn't have this permission
+      "DownstreamPathTemplate": "/api/get-future", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-future-prediction", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7164"
+  }
+}
