@@ -1,0 +1,23 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@GatewayBaseAddress = https://localhost:7125
+@Token = ey...
+
+### An endpoint without permission
+Get {{GatewayBaseAddress}}/get-personal-data
+Authorization: Bearer {{Token}}
+
+### An endpoint with NoPermissionRequired permission
+Get {{GatewayBaseAddress}}/get-no-permission
+Authorization: Bearer {{Token}}
+
+### An endpoint with HasDriverPermission permission
+Get {{GatewayBaseAddress}}/has-driver-permission
+Authorization: Bearer {{Token}}
+
+### An endpoint with CanGetContracts permission that user "has"
+Get {{GatewayBaseAddress}}/get-contracts
+Authorization: Bearer {{Token}}
+
+### An endpoint with CanKnowFuture permission that user doesn't have
+Get {{GatewayBaseAddress}}/get-future-prediction
+Authorization: Bearer {{Token}}
