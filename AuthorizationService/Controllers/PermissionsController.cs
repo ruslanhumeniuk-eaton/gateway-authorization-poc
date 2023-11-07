@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 
 namespace AuthorizationService.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api")]
     public class PermissionsController : ControllerBase
     {

@@ -1,9 +1,10 @@
-﻿using System.Security.Claims;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Security.Claims;
 using IdentityModel;
-using IdentityModel.Client;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace YarpReversedProxy.Authorization;
+namespace Shared;
 
 public class PermissionService : IPermissionService
 {
@@ -19,7 +20,7 @@ public class PermissionService : IPermissionService
         _cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(_slidingExpirationPeriod);
     }
 
-    public async Task<bool> IsAuthorizedAsync(ClaimsPrincipal user, string requiredKey)
+    public async Task<bool> IsAuthorizedAsync(ClaimsPrincipal user, string permissionKey, string accessToken)
     {
         string userId = user
             .Claims
@@ -32,21 +33,21 @@ public class PermissionService : IPermissionService
             userId = Guid.NewGuid().ToString();
         }
 
-        HashSet<string> permissions = await GetUserPermissions(userId);
+        HashSet<string> permissions = await GetUserPermissions(userId, accessToken);
 
-        return permissions.Contains(requiredKey);
+        return permissions.Contains(permissionKey);
     }
 
-    private Task<HashSet<string>> GetUserPermissions(string userId) =>
-        _cache.GetOrCreateAsync(GenerateCacheKey(userId), CreateCacheEntry());
+    private Task<HashSet<string>> GetUserPermissions(string userId, string accessToken) =>
+        _cache.GetOrCreateAsync(GenerateCacheKey(userId), CreateCacheEntry(accessToken));
 
     private static string GenerateCacheKey(string userId) => $"AuthCacheKey-{userId}";
 
-    private Func<ICacheEntry, Task<HashSet<string>>> CreateCacheEntry() => async entry =>
+    private Func<ICacheEntry, Task<HashSet<string>>> CreateCacheEntry(string accessToken) => async entry =>
     {
         // perform a request to UserAccess service here.
         HttpClient client = _httpClientFactory.CreateClient("user-access");
-        //client.SetBearerToken("");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken); // new AuthenticationHeaderValue("Bearer", "Your Oauth token");
 
         var userPermissions = await client.GetFromJsonAsync<UserPermissions>("api/permissions");
 

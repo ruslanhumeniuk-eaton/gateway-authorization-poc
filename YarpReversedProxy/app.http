@@ -1,6 +1,6 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 @GatewayBaseAddress = https://localhost:7125
-@Token = ey...
+@Token = eyJh...
 
 ### An endpoint without permission
 Get {{GatewayBaseAddress}}/get-personal-data

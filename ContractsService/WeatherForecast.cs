@@ -1,4 +1,4 @@
-namespace ContractsService
+namespace MicroApi
 {
     public class WeatherForecast
     {

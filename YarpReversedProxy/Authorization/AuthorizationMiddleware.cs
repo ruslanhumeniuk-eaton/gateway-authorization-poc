@@ -1,4 +1,7 @@
-﻿namespace YarpReversedProxy.Authorization
+﻿using Microsoft.AspNetCore.Authentication;
+using Shared;
+
+namespace YarpReversedProxy.Authorization
 {
     public class AuthorizationMiddleware : IMiddleware
     {
@@ -28,7 +31,8 @@
 
             if (RequirePermission(route.Permission))
             {
-                bool isAuthorized = await _permissionService.IsAuthorizedAsync(context.User, route.Permission);
+                var token = await context.GetTokenAsync("access_token");
+                bool isAuthorized = await _permissionService. IsAuthorizedAsync(context.User, route.Permission, token);
 
                 if (!isAuthorized)
                 {

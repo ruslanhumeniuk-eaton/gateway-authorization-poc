@@ -1,4 +1,4 @@
-namespace YarpReversedProxy.Authorization
+namespace Shared
 {
     public class UserPermissions
     {

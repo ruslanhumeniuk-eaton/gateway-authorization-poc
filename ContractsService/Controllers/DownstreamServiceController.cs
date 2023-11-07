@@ -1,4 +1,4 @@
-using ContractsService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroApi.Controllers
@@ -12,6 +12,7 @@ namespace MicroApi.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        [Authorize]
         [HttpGet("contracts")]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -27,12 +28,15 @@ namespace MicroApi.Controllers
         [HttpGet("personal-data")]
         public object GetData() => new { time = DateTime.Now, Age = Random.Shared.Next(18, 81) };
 
+        [Authorize]
         [HttpGet("no-permission")]
         public object GetNoPermissionData() => new { time = DateTime.Now, Label = "You got data from an endpoint with NoPermission" };
 
+        [Authorize]
         [HttpGet("driver-permission")]
         public object GetDriverPermission() => new { time = DateTime.Now, Label = "You got data from an endpoint with HasDriverPermission" };
 
+        [Authorize]
         [HttpGet("get-future")]
         public object GetFuture() => new { time = DateTime.Now, Label = "I have no idea how you can see it. smt broken" };
     }

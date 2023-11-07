@@ -1,4 +1,6 @@
-﻿using OcelotGateway.Ocelot;
+﻿using Microsoft.AspNetCore.Authentication;
+using OcelotGateway.Ocelot;
+using Shared;
 
 namespace OcelotGateway.Authorization
 {
@@ -30,7 +32,8 @@ namespace OcelotGateway.Authorization
 
             if (RequirePermission(route.PermissionKey))
             {
-                bool isAuthorized = await _permissionService.IsAuthorizedAsync(context.User, route.PermissionKey);
+                var token = await context.GetTokenAsync("access_token");
+                bool isAuthorized = await _permissionService.IsAuthorizedAsync(context.User, route.PermissionKey, token);
 
                 if (!isAuthorized)
                 {
