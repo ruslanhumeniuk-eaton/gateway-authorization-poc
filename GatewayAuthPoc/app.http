@@ -1,23 +1,53 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 @GatewayBaseAddress = https://localhost:7164
-@Token = eyJh...
+@IS4Url = https://login.dev.greenmotion.tech/connect/token
+@contractId = idxvdN3BgjnO-UkSVzonZi4ChfZsN58EVe9m_5pdMwYHBd8A_npV0nFcVfFwhTpR
+
+# @name is4_auth
+Post {{IS4Url}}
+Content-Type: application/x-www-form-urlencoded
+
+&grant_type=client_credentials
+&client_id=
+&client_secret=
+&scope=
+&redirect_uri=http://localhost:55017
+
+### An endpoint to get Contract meta
+Get {{GatewayBaseAddress}}/contract/.links
+
+### An endpoint with CanGetContracts permission that user has
+Get {{GatewayBaseAddress}}/get-contracts
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}
+
+### An endpoint with CanGetContracts permission that user has
+Get {{GatewayBaseAddress}}/get-contract/{{contractId}}
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}
+
+### An endpoint with CanUpdateContract permission that user doesn't have
+Put {{GatewayBaseAddress}}/update-contract
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}
+
+### An endpoint with CanDeleteContract permission that user doesn't have
+Put {{GatewayBaseAddress}}/delete-contract
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}
+
+### An endpoint to get PersonalData meta
+Get {{GatewayBaseAddress}}/personal-data/.links
+ContractId: {{contractId}}
 
 ### An endpoint without permission
 Get {{GatewayBaseAddress}}/get-personal-data
-Authorization: Bearer {{Token}}
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}
 
 ### An endpoint with NoPermissionRequired permission
 Get {{GatewayBaseAddress}}/get-no-permission
-Authorization: Bearer {{Token}}
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}
 
 ### An endpoint with HasDriverPermission permission
 Get {{GatewayBaseAddress}}/has-driver-permission
-Authorization: Bearer {{Token}}
-
-### An endpoint with CanGetContracts permission that user "has"
-Get {{GatewayBaseAddress}}/get-contracts
-Authorization: Bearer {{Token}}
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}
 
 ### An endpoint with CanKnowFuture permission that user doesn't have
 Get {{GatewayBaseAddress}}/get-future-prediction
-Authorization: Bearer {{Token}}
+Authorization: Bearer {{is4_auth.response.body.$.access_token}}

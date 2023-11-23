@@ -5,6 +5,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddEncryption();
+builder.Services.AddIdorConfiguration();
 
 builder.Services.AddGreenMotionIdentityServerAuthentication();
 

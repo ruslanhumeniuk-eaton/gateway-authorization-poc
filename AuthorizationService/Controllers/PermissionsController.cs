@@ -9,7 +9,7 @@ namespace AuthorizationService.Controllers
     [Route("api")]
     public class PermissionsController : ControllerBase
     {
-        private static readonly HashSet<string> Permissions = new(new[] { "test", "CanGetContracts" });
+        private static readonly HashSet<string> Permissions = new(new[] { "test", "CanGetContracts", "CanUpdateContract" });
 
         [HttpGet("permissions")]
         public UserPermissions Get() => new()

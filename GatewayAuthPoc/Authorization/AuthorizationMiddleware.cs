@@ -7,22 +7,16 @@ namespace OcelotGateway.Authorization
     public class AuthorizationMiddleware : IMiddleware
     {
         private readonly IConfiguration _configuration;
-        private readonly IPermissionService _permissionService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AuthorizationMiddleware(IConfiguration configuration, IPermissionService permissionService)
+        public AuthorizationMiddleware(IConfiguration configuration, IAuthorizationService authorizationService)
         {
             _configuration = configuration;
-            _permissionService = permissionService;
+            _authorizationService = authorizationService;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (!IsAuthenticated(context))
-            {
-                context.Response.StatusCode = 403;
-                return;
-            }
-
             OcelotRouteConfiguration? route = GetOcelotRouteConfiguration(context);
             if (route == null)
             {
@@ -30,15 +24,28 @@ namespace OcelotGateway.Authorization
                 return;
             }
 
-            if (RequirePermission(route.PermissionKey))
+            if (route.AuthenticationOptions is not null)
             {
-                var token = await context.GetTokenAsync("access_token");
-                bool isAuthorized = await _permissionService.IsAuthorizedAsync(context.User, route.PermissionKey, token);
-
-                if (!isAuthorized)
+                if (!IsAuthenticated(context))
                 {
                     context.Response.StatusCode = 403;
                     return;
+                }
+
+                if (RequirePermission(route.PermissionKeys))
+                {
+                    string? token = await context.GetTokenAsync("access_token");
+
+                    foreach (string permission in route.PermissionKeys)
+                    {
+                        bool isAuthorized = await _authorizationService.IsAuthorizedAsync(context.User, permission, token);
+
+                        if (!isAuthorized)
+                        {
+                            context.Response.StatusCode = 403;
+                            return;
+                        }
+                    }
                 }
             }
 
@@ -48,10 +55,10 @@ namespace OcelotGateway.Authorization
         private static bool IsAuthenticated(HttpContext context) =>
             context.User.Identity?.IsAuthenticated == true;
 
-        private static bool RequirePermission(string permission) =>
-            !string.IsNullOrWhiteSpace(permission)
-            && permission != "NoPermissionRequired"
-            && permission != "HasDriverPermission";
+        private static bool RequirePermission(string[]? permissions) =>
+            permissions is not null && permissions.Any()
+            && permissions.All(p => p != "NoPermissionRequired")
+            && permissions.All(p => p != "HasDriverPermission");
 
         private OcelotRouteConfiguration? GetOcelotRouteConfiguration(HttpContext context)
         {

@@ -6,12 +6,12 @@ namespace YarpReversedProxy.Authorization
     public class AuthorizationMiddleware : IMiddleware
     {
         private readonly IConfiguration _configuration;
-        private readonly IPermissionService _permissionService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AuthorizationMiddleware(IConfiguration configuration, IPermissionService permissionService)
+        public AuthorizationMiddleware(IConfiguration configuration, IAuthorizationService authorizationService)
         {
             _configuration = configuration;
-            _permissionService = permissionService;
+            _authorizationService = authorizationService;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -32,7 +32,7 @@ namespace YarpReversedProxy.Authorization
             if (RequirePermission(route.Permission))
             {
                 var token = await context.GetTokenAsync("access_token");
-                bool isAuthorized = await _permissionService. IsAuthorizedAsync(context.User, route.Permission, token);
+                bool isAuthorized = await _authorizationService. IsAuthorizedAsync(context.User, route.Permission, token);
 
                 if (!isAuthorized)
                 {
