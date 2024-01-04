@@ -1,13 +1,9 @@
-﻿namespace Contracts
+﻿namespace Contracts;
+public class ContractDto
 {
-    public class ContractDto
-    {
-        public DateOnly Date { get; set; }
+    public Guid Id { get; set; }
 
-        public int RandomNumber { get; set; }
+    public DateOnly Date { get; set; }
 
-        public int RandomCalculation => 32 + (int)(RandomNumber / 0.5556);
-
-        public string? Summary { get; set; }
-    }
+    public AddressDto Address { get; set; } = new();
 }

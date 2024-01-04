@@ -19,8 +19,8 @@ public interface IJsonConverterFactory
     /// <summary>
     ///     Instantiate a <see cref="JsonConverter" /> in function of the given type.
     /// </summary>
-    /// <param name="objectType">Type to convert.</param>
+    /// <param name="configurationType">Type to convert.</param>
     /// <param name="namingStrategy">Naming strategy.</param>
     /// <returns>The JSON converter.</returns>
-    JsonConverter CreateConverter(Type objectType, NamingStrategy namingStrategy);
+    JsonConverter CreateConverter(Type configurationType, NamingStrategy namingStrategy);
 }

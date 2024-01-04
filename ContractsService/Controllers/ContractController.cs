@@ -9,11 +9,6 @@ namespace MicroApi.Controllers
     [Route("api/[controller]")]
     public class ContractController : ControllerBase
     {
-        private static readonly string[] Summaries =
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         [HttpGet(".links")]
         public ActionResult<ContractMeta> GetMetalinks() => Ok(new ContractMeta());
 
@@ -22,9 +17,14 @@ namespace MicroApi.Controllers
         {
             return Ok(new ContractDto
             {
+                Id = Guid.NewGuid(),
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(2)),
-                RandomNumber = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                Address = new AddressDto
+                {
+                    Line1 = "Address 1",
+                    Line2 = "Address Subline 2",
+                    AcceptedCities = new[] { new CityDto { Code = 143, Name = "Tourists City" } }
+                }
             });
         }
 
@@ -36,9 +36,21 @@ namespace MicroApi.Controllers
             {
                 Contracts = Enumerable.Range(1, 5).Select(index => new ContractDto
                 {
+                    Id = Guid.NewGuid(),
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    RandomNumber = Random.Shared.Next(-20, 55),
-                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                    Address = new AddressDto
+                    {
+                        Line1 = $"Address Line 1{Random.Shared.Next(20, 55)}",
+                        Line2 = $"Address Subline 2{Random.Shared.Next(20, 55)}",
+                        AcceptedCities = new[]
+                        {
+                            new CityDto
+                            {
+                                Code = Random.Shared.Next(100, 155),
+                                Name = $"Tourists City {Random.Shared.Next(800, 879)}"
+                            }
+                        }
+                    }
                 })
             });
         }

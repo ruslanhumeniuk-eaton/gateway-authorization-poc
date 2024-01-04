@@ -12,7 +12,7 @@ public class PersonalDataMeta
     public ResourceId<Guid> ContractId { get; }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="TeamMeta" /> class.
+    ///     Initializes a new instance of the <see cref="PersonalDataMeta" /> class.
     /// </summary>
     /// <param name="contractId">Organization unique identifier.</param>
     public PersonalDataMeta(ResourceId<Guid> contractId)

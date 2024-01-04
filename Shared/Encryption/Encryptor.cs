@@ -8,7 +8,7 @@ namespace Shared.Encryption;
 /// <summary>
 ///     Provide symmetrical encryption with AES 256.
 /// </summary>
-internal class Encryptor : IEncryptor
+public class Encryptor : IEncryptor
 {
     private readonly ICryptoTransform _decryptor;
     private readonly ICryptoTransform _encryptor;

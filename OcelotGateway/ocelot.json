@@ -1,0 +1,178 @@
+{
+  "Routes": [
+    {
+      "Name": "GetContractMeta",
+      "PermissionKeys": null,
+      "DownstreamPathTemplate": "/api/contract/.links", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/contract/.links", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "Name": "GetContract",
+      "PermissionKeys": [ "CanGetContracts" ], // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/contract/{contractId}", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-contract/{contractId}", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "Name": "GetContracts",
+      "PermissionKeys": [ "CanGetContracts" ], // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/contract", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-contracts", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "Name": "UpdateContract",
+      "PermissionKeys": [ "CanUpdateContract" ], // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/contract", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/update-contract", // <-- gateway path
+      "UpstreamHttpMethod": [ "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "Name": "DeleteContract",
+      "PermissionKeys": [ "CanDeleteContract" ], // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/contract", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/delete-contract", // <-- gateway path
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "Name": "GetPersonalDataMeta",
+      "PermissionKeys": null,
+      "DownstreamPathTemplate": "/api/personalData/.links", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/personal-data/.links", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "Name": "GetPersonalDataByContract",
+      "PermissionKeys": null, // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/personalData/byContract/{everything}", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-personal-data-by-contract/{everything}", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "Name": "GetDriverPermission",
+      "PermissionKeys": [ "HasDriverPermission" ], // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/personalData/driver-permission", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/has-driver-permission", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "Name": "GetNoPermission",
+      "PermissionKeys": [ "NoPermissionRequired" ], // <-- permission || User has this permission
+      "DownstreamPathTemplate": "/api/personalData/no-permission", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-no-permission", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "Name": "GetFutureData",
+      "PermissionKeys": [ "CanKnowFuture" ], // <-- permission || User doesn't have this permission
+      "DownstreamPathTemplate": "/api/personalData/get-future", // <-- microservice path
+
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "UpstreamPathTemplate": "/get-future-prediction", // <-- gateway path
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7164"
+  }
+}
